@@ -1,3 +1,4 @@
+import { where } from "sequelize";
 import db from "../models/index";
 import bcrypt from 'bcryptjs';
 
@@ -6,6 +7,7 @@ const salt = bcrypt.genSaltSync(10);
 let creatNewUser = async (data) => {
     return new Promise(async (resolve, reject) => {
         try {
+            console.log(data);
             let hashPasswordFromBcypt = await hashUserPassword(data.password);
             await db.User.create({
                 email: data.email,
@@ -36,6 +38,68 @@ let hashUserPassword = (password) => {
         }
     })
 }
+let getAllUser = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let users = await db.User.findAll({
+                raw: true,
+            });
+            resolve(users);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+let getUserInfoById = (userId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let user = await db.User.findOne({
+                where: { id: userId },
+                raw: true,
+            });
+
+            if (user) {
+                resolve(user);
+            } else {
+                resolve([]);
+            }
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+let updateUserData = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let user = await db.User.findOne({
+                where: { id: data.id }
+            })
+            if (user) {
+                user.firstName = data.firstName;
+                user.lastName = data.lastName;
+                user.phonenumber = data.phonenumber;
+                user.address = data.address;
+
+                await user.save();
+                resolve();
+            }
+            else {
+                resolve();
+            }
+
+        } catch (e) {
+            console.log(e);
+
+        }
+
+    });
+
+}
 module.exports = {
-    creatNewUser: creatNewUser
+    creatNewUser: creatNewUser,
+    getAllUser: getAllUser,
+    getUserInfoById: getUserInfoById,
+    updateUserData: updateUserData,
+
 }
