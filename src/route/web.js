@@ -9,6 +9,7 @@ let initWebRouter = (app) => {
     router.get('/get-crud', homeController.displayGetCRUD);
     router.get('/edit-crud', homeController.getEditCRUD);
     router.post('/put-crud', homeController.putCRUD);
+    router.get('/delete-crud', homeController.deleteCRUD);
     router.get('/VT', (req, res) => {
         return res.send('Xin Chào VT1')
     });
