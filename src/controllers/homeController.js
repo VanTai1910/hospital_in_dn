@@ -1,5 +1,5 @@
 import db from "../models/index";
-import CRUDService from "../services/CRUDSerives"
+import CRUDService from "../services/CRUDSerives";
 let getHomePage = async (req, res) => {
     try {
         let data = await db.User.findAll();

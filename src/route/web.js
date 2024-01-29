@@ -1,5 +1,6 @@
 import express from 'express';
 import homeController from '../controllers/homeController';
+import userController from "../controllers/userController";
 let router = express.Router();
 
 let initWebRouter = (app) => {
@@ -10,9 +11,9 @@ let initWebRouter = (app) => {
     router.get('/edit-crud', homeController.getEditCRUD);
     router.post('/put-crud', homeController.putCRUD);
     router.get('/delete-crud', homeController.deleteCRUD);
-    router.get('/VT', (req, res) => {
-        return res.send('Xin Chào VT1')
-    });
+
+    router.post('/api/login', userController.handleLogin)
+
 
     return app.use("/", router);
 }
